@@ -39,6 +39,7 @@ const main = async () => {
         impersonatedSigner.address,
         deadline
     );
+    /// Above function works, see screenshot 1. In the screenshot folder
     /// The above function works but WETH doesn't have balanceOf function to check the balance
     /// I decided to swap from token to WETH because, ETHER doesn't have a contract address.
     /// But you can see that it works if you look at the screenshots, you will notice a change it value of the token and also Ether.

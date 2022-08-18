@@ -12,10 +12,10 @@ const main = async () => {
     const impersonatedSigner = await ethers.getSigner(USDCHolder);
 
     const amountOut = 2000;
-    const amountIn = 1000;
+    const amountIn = 2000;
 
-    const USDC = await ethers.getContractAt("IERC20", USDCAddress, impersonatedSigner);
-    const DAI = await ethers.getContractAt("IERC20", DAIAddress);
+    const USDC = await ethers.getContractAt("IERCC20", USDCAddress, impersonatedSigner);
+    const DAI = await ethers.getContractAt("IERCC20", DAIAddress);
 
     const ROUTER = await ethers.getContractAt("IUniswap", UNIRouter, impersonatedSigner);
 
@@ -27,13 +27,15 @@ const main = async () => {
 
     console.log("balance before swap", Number(usdcBal._hex), Number(daiBal._hex));
 
-    await ROUTER.swapTokensForExactTokens(
-        ethers.utils.parseUnits("2000", "6"),
-        ethers.utils.parseUnits("1980", "18"),
+    await ROUTER.swapExactTokensForTokens(
+        2000,
+        2000,
         [USDCAddress, DAIAddress],
         impersonatedSigner.address,
-        deadline
+        deadline,
+        {gasLimit: ethers.utils.hexlify(1000000)}
     );
+    /// The above function worked see the result in screenshot 7. in the screenshot folder
 
     const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
     const daiBalAfter = await DAI.balanceOf(impersonatedSigner.address);
